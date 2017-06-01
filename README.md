@@ -53,5 +53,11 @@ If the user provides an incorrect email/password combo display an error message 
 Note: Never tell a user that they entered an incorrect password, always say incorrect email or password.
 This makes it so people can't figure out what emails you have in your database.
 
+
+### Server Routes
+
+[GET] `/users` Gets all users. Requires a header `authorization` and a valid JWT.
+[POST] `/users` Creates a user. Requires an object with two properties: `email` and `password`. Returns a JWT.
+[POST] `/signin` Requires an object with two properties: `email` and `password`. Returns a JWT.
  
 
