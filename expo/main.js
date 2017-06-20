@@ -1,27 +1,39 @@
 import Expo from 'expo';
 import React from 'react';
-import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { StyleSheet, View, AsyncStorage } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import SignUp from './SignUp';
+
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  static navigationOptions = {//name of page that apppears at top of app
+    title: 'Sign Up',
+  };
 
   componentWillMount() {
-    AsyncStorage.getItem('token').then((token) => {
-      this.props.navigation.navigate('Content');
+    AsyncStorage.getItem('token').then((token) => {//after component mounts, grab jwt token
+      this.props.navigation.navigate('Content'); //after token clears, navigate to 'content'
     });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up main.js to start working on your app!</Text>
+        //add signin button here
+        <SignUp navigate={this.props.navigation.navigate} />
       </View>
     );
   }
 }
+
+const App = StackNavigator({
+  Home: { screen: Home },
+  Content: { screen: Content },
+});
 
 const styles = StyleSheet.create({
   container: {
