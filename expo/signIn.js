@@ -10,28 +10,23 @@ import {
 } from 'react-native';
 import axios from 'axios';
 
-class SignUp extends React.Component {
+class SignIn extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
       password: '',
     };
-    this.signUp = this.signUp.bind(this);
+    this.signIn = this.signIn.bind(this);
   }
 
-  signUp() {
-    axios.post('https://mobile.server-ii.herokuapp.com/users', {
+  signIn() {
+    axios.post('https://mobile-server-ii.herokuapp.com/users', {
       email: this.state.email,
       password: this.state.password,
     }).then((response) => {
-      if (response.data.code === 11000) { //check if email taken
-        return this.setState({
-        error: 'Email already taken',
-      });
-      }
-      AsyncStorage.setItem('token', response.data.token).then(() => { //save token to aSync storage
-        this.props.navigate('Content'); //after signUp token, send to Content
+      AsyncStorage.getItem('token', response.data.token).then(() => {
+        this.props.navigate('Content');
       });
     }).catch((error) => {
       console.log(error);
@@ -41,21 +36,20 @@ class SignUp extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Sign Up</Text>
-        <Text>{this.state.error && this.state.length ? this.state.error : null}</Text>
-        <TextInput //form in native basically
+        <Text>Sign In</Text>
+        <TextInput
           style={styles.textInput}
           onChangeText={(email) => this.setState({ email })}
           value={this.state.email}
         />
         <TextInput
           style={styles.textInput}
-          onChangeText={(password) => this.setState({ password })}
+          onChangeText={(password => this.setState({ password }))}
           value={this.state.password}
         />
         <Button
           title="Submit"
-          onPress={this.signUp}
+          onPress={this.SignIn}
         />
       </View>
     );
@@ -64,7 +58,7 @@ class SignUp extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -76,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default SignIn;
